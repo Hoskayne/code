@@ -1,6 +1,6 @@
 # Information
 
-Notes for larning. I know very little, so this is where I disambiguate terms etc I don't already understand while reading. I quote everything that's from the book directly
+Notes for larning. I know very little (college is not that useful...), so this is where I disambiguate terms etc I don't already understand while reading. I quote everything that's from the book directly
 
 ## Ch.1
 
@@ -81,7 +81,61 @@ Go has a nice garbage collector hooray
   + The operating system holds most of this information about active processes in data structures called process control blocks. Any subset of the resources, typically at least the processor state, may be associated with each of the process' threads in operating systems that support threads or child (daughter) processes. ^4
   
 ## Ch. 2
+
+This chapter talks about [a sample project included in this repo](chapter2/sample)
   
+### 2.2
+
+This section looks at [main.go](chapter2/sample/main.go)
+
+There needs to be a main function somewhere; said main function needs to be in package main
+
+> packages define a unit of compiled code and their names help provide a level of indirection to the identifiers that are declared inside of them, just like a namespace.
+
+Wait, what's [indirection](#indirection)?
+
+> All code files in a folder must use the same package name, and it’s common practice to name the package after the folder. As stated before, a package defines a unit of compiled code, and each unit of code represents a package.
+
+> [the blank identifier, `_`] is a technique in Go to allow initialization from a package to occur, even if you don’t directly use any identifiers from the package...The blank identifier allows the compiler to accept the import and call any init functions that can be found in the different code files within that package.
+
+>All init functions in any code file that are part of the program will get called before the main function
+
+### 2.3
+
+Here the book examines [the search package](chapter2/sample/search)
+
+>In Go, identifiers are either exported or unexported from a package. An exported identifier can be directly accessed by code in other packages when the respective package is imported. These identifiers start with a capital letter. Unexported identifiers start with a lowercase letter and can’t be directly accessed by code in other packages. But just because an identifier is unexported, it doesn’t mean other packages can’t indirectly access these identifiers. As an example, a function can return a value of an unexported type and this value is accessible by any calling function, even if the calling function has been declared in a different package.
+
+>A `map` is a reference type that you’re required to `make` in Go. If you don’t make the map first and assign it to your variable, you’ll receive errors when you try to use the map variable. This is because the zero value for a map variable is nil...In Go, all variables are initialized to their zero value. For numeric types, that value is 0; for strings it’s an empty string; for Booleans it’s false; and for pointers, the zero value is nil. When it comes to reference types, there are underlying data structures that are initialized to their zero values. But variables declared as a reference type set to their zero value will return the value of nil.
+
+From [the golang blog](https://blog.golang.org/go-maps-in-action):
+
+>One of the most useful data structures in computer science is the hash table. Many hash table implementations exist with varying properties, but in general they offer fast lookups, adds, and deletes. Go provides a built-in map type that implements a hash table.
+
+Has the following syntax: `map[KeyType]ValueType`
+
+> If an error [is returned], never trust the other values being returned from the function. They should always be ignored, or else you run the risk of the code generating more errors or panics.
+
+> A good rule of thumb when declaring variables is to use the keyword var when declaring variables that will be initialized to their zero value, and to use the short variable declaration operator when you’re providing extra initialization or making a function call.
+
+>channels implement a queue of typed values that are used to communicate data between goroutines.
+
+>In Go, once the main function returns, the program terminates. Any goroutines that were launched and are still running at this time will also be terminated by the Go runtime. When you write concurrent programs, it’s best to cleanly terminate any goroutines that were launched prior to letting the main function return.
+
+>A WaitGroup is a great way to track when a goroutine is finished performing its work. A WaitGroup is a counting semaphore, and we’ll use it to count off goroutines as they finish their work.
+
+What's a [semaphore](#semaphore)?
+
+>When you have a function that returns multiple values, and you don’t have a need for one, you can use the blank identifier to ignore those values. 
+
+> In Go, all variables are passed by value. Since the value of a pointer variable is the address to the memory being pointed to, passing pointer variables between functions is still considered a pass by value.
+
+### Extra Larning
+
+<a name="indirection"></a> **Indirection**: aka dereferencing. The ability to reference something using a name, reference, or container instead of the value itself. The most common form of indirection is the act of manipulating a value through its memory address. ^5
+
+<a name="semaphore"></a> **Semaphore**: In computer science, a semaphore is a variable or abstract data type used to control access to a common resource by multiple processes in a concurrent system such as a multitasking operating system. A semaphore is simply a variable. A useful way to think of a semaphore as used in the real-world systems is as a record of how many units of a particular resource are available, coupled with operations to adjust that record safely as units are required or become free, and, if necessary, wait until a unit of the resource becomes available. ^6
+
 -------------------------
 
 ^1: <https://en.wikipedia.org/wiki/Thread_(computing)>
@@ -91,3 +145,7 @@ Go has a nice garbage collector hooray
 ^3: <https://www.tutorialspoint.com/operating_system/os_processes.htm>
 
 ^4: <https://en.wikipedia.org/wiki/Process_(computing)#Representation>
+
+^5: <https://en.wikipedia.org/wiki/Indirection>
+
+^6: <https://en.wikipedia.org/wiki/Semaphore_(programming)>

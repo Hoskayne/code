@@ -30,6 +30,7 @@ func Run(searchTerm string) {
 	for _, feed := range feeds {
 		// Retrieve a matcher for the search.
 		matcher, exists := matchers[feed.Type]
+		//the program initializes itself and populates the above map
 		if !exists {
 			matcher = matchers["default"]
 		}
